@@ -10,7 +10,6 @@ const authRoutes = require('./src/routes/authRoutes');
 const userRoutes = require('./src/routes/userRoutes');
 const userDesignationRoutes = require('./src/routes/userDesignationRoutes');
 const permissionRoutes = require('./src/routes/permissionRoutes');
-const userDesignationPermissionRoutes = require('./src/routes/userDesignationPermissionRoutes');
 const auditRoutes = require('./src/routes/auditRoutes');
 
 const errorHandler = require('./src/middlewares/errorHandler');
@@ -48,7 +47,6 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/user-designations', userDesignationRoutes);
 app.use('/api/permissions', permissionRoutes);
-app.use('/api/user-designation-permissions', userDesignationPermissionRoutes);
 app.use('/api/audits', auditRoutes);
 
 // Health check
