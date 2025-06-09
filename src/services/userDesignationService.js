@@ -60,10 +60,8 @@ const createUserDesignation = async (designationData, createdBy) => {
 };
 
 const updateUserDesignation = async (id, designationData, updatedBy) => {
-  // Extract permissions from the payload
   const { permissions, ...designationInfo } = designationData;
-  
-  // Update the user designation
+
   const designation = await UserDesignation.findByIdAndUpdate(
     id,
     { ...designationInfo, updatedBy },
@@ -74,22 +72,25 @@ const updateUserDesignation = async (id, designationData, updatedBy) => {
     throw new Error('User designation not found');
   }
 
-  // If permissions are provided, update user designation permissions
+  // If permissions are provided, update or create a single document
   if (permissions && Array.isArray(permissions)) {
-    // Delete existing permissions for this designation
-    await UserDesignationPermission.deleteMany({ userDesignationId: id });
-    
-    // Create new permissions
-    if (permissions.length > 0) {
-      const permissionPromises = permissions.map(permissionId => 
-        UserDesignationPermission.create({
-          userDesignationId: id,
-          permissions: permissionId,
-          createdBy: updatedBy
-        })
-      );
-      
-      await Promise.all(permissionPromises);
+    // Try updating if exists
+    const updated = await UserDesignationPermission.findOneAndUpdate(
+      { userDesignationId: id },
+      {
+        permissions,
+        updatedBy
+      },
+      { new: true }
+    );
+
+    // If not exists, create new
+    if (!updated) {
+      await UserDesignationPermission.create({
+        userDesignationId: id,
+        permissions,
+        createdBy: updatedBy
+      });
     }
   }
 
@@ -97,6 +98,7 @@ const updateUserDesignation = async (id, designationData, updatedBy) => {
     .populate('createdBy', 'username')
     .populate('updatedBy', 'username');
 };
+
 
 const deleteUserDesignation = async (id, deletedBy) => {
   const designation = await UserDesignation.findByIdAndDelete(id);

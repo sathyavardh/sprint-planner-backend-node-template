@@ -11,6 +11,8 @@ const userRoutes = require('./src/routes/userRoutes');
 const userDesignationRoutes = require('./src/routes/userDesignationRoutes');
 const permissionRoutes = require('./src/routes/permissionRoutes');
 const auditRoutes = require('./src/routes/auditRoutes');
+const sprintRoutes = require('./src/routes/sprintRoutes');
+const taskRoutes = require('./src/routes/taskRoutes');
 
 const errorHandler = require('./src/middlewares/errorHandler');
 const { connectDB } = require('./src/config/database');
@@ -48,6 +50,8 @@ app.use('/api/users', userRoutes);
 app.use('/api/user-designations', userDesignationRoutes);
 app.use('/api/permissions', permissionRoutes);
 app.use('/api/audits', auditRoutes);
+app.use('/api/sprints', sprintRoutes);
+app.use('/api/tasks', taskRoutes);
 
 // Health check
 app.get('/health', (req, res) => {

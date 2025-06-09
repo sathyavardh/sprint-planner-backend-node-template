@@ -48,57 +48,70 @@ const seedDatabase = async () => {
     );
     console.log('Created permissions...');
 
-    // Create designation permissions
+    // Prepare permissions per designation
+
+    // Junior Dev: permissions containing "read"
     const juniorPermissions = permissions.filter(p => 
       p.permissionName.includes('read')
     ).map(p => p._id);
 
+    // Senior Dev: permissions excluding those containing "delete" or "audit"
     const seniorPermissions = permissions.filter(p => 
       !p.permissionName.includes('delete') && !p.permissionName.includes('audit')
     ).map(p => p._id);
 
+    // Manager: all permissions
     const managerPermissions = permissions.map(p => p._id);
 
+    // Map designations for convenience
+    const juniorId = designations.find(d => d.designationName === DESIGNATIONS.JUNIOR_DEV)._id;
+    const seniorId = designations.find(d => d.designationName === DESIGNATIONS.SENIOR_DEV)._id;
+    const managerId = designations.find(d => d.designationName === DESIGNATIONS.MANAGER)._id;
+
+    // Create one document per designation with all permissions as an array
     await UserDesignationPermission.create([
       {
-        userDesignationId: designations.find(d => d.designationName === DESIGNATIONS.JUNIOR_DEV)._id,
-        permissions: juniorPermissions
+        userDesignationId: juniorId,
+        permissions: juniorPermissions,
+        createdBy: null
       },
       {
-        userDesignationId: designations.find(d => d.designationName === DESIGNATIONS.SENIOR_DEV)._id,
-        permissions: seniorPermissions
+        userDesignationId: seniorId,
+        permissions: seniorPermissions,
+        createdBy: null
       },
       {
-        userDesignationId: designations.find(d => d.designationName === DESIGNATIONS.MANAGER)._id,
-        permissions: managerPermissions
+        userDesignationId: managerId,
+        permissions: managerPermissions,
+        createdBy: null
       }
     ]);
     console.log('Created designation permissions...');
 
-    // Create sample users (no manual hashing)
+    // Create sample users (password will be hashed in schema middleware)
     const users = await User.create([
       {
-        username: 'john_junior',
-        userEmail: 'john@company.com',
-        userPassword: 'password123', // let the schema hash it
-        userDesignation: designations.find(d => d.designationName === DESIGNATIONS.JUNIOR_DEV)._id,
-        userCompany: 'Tech Corp',
+        username: 'Siva', 
+        userEmail: 'siva@zohocorp.com', 
+        userPassword: 'password123', // schema should hash this
+        userDesignation: juniorId,
+        userCompany: 'ZohoCorp',
         userPhno: '1234567890'
       },
       {
-        username: 'jane_senior',
-        userEmail: 'jane@company.com',
+        username: 'Josheph',
+        userEmail: 'josheph@zohocorp.com',
         userPassword: 'password123',
-        userDesignation: designations.find(d => d.designationName === DESIGNATIONS.SENIOR_DEV)._id,
-        userCompany: 'Tech Corp',
+        userDesignation: seniorId,
+        userCompany: 'ZohoCorp',
         userPhno: '0987654321'
       },
       {
-        username: 'bob_manager',
-        userEmail: 'bob@company.com',
+        username: 'Sathya',
+        userEmail: 'sathya@zohocorp.com',
         userPassword: 'password123',
-        userDesignation: designations.find(d => d.designationName === DESIGNATIONS.MANAGER)._id,
-        userCompany: 'Tech Corp',
+        userDesignation: managerId,
+        userCompany: 'Zoho Corp',
         userPhno: '5555555555'
       }
     ]);
@@ -106,9 +119,9 @@ const seedDatabase = async () => {
 
     console.log('✅ Database seeding completed successfully!');
     console.log('🧪 Sample login credentials:');
-    console.log('- john@company.com / password123 (Junior Developer)');
-    console.log('- jane@company.com / password123 (Senior Developer)');
-    console.log('- bob@company.com / password123 (Manager)');
+    console.log('- siva@zohocorp.com / password123 (Junior Developer)');
+    console.log('- josheph@zohocorp.com / password123 (Senior Developer)');
+    console.log('- sathya@zohocorp.com / password123 (Manager)');
 
   } catch (error) {
     console.error('❌ Error seeding database:', error);

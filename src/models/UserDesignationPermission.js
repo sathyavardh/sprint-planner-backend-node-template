@@ -4,7 +4,8 @@ const userDesignationPermissionSchema = new mongoose.Schema({
   userDesignationId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'UserDesignation',
-    required: true
+    required: true,
+    unique: true
   },
   permissions: [{
     type: mongoose.Schema.Types.ObjectId,
