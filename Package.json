@@ -1,5 +1,5 @@
 {
-  "name": "Zoho_Planner-Node-RABC",
+  "name": "Sprint_Planner-Node-RABC",
   "version": "1.0.0",
   "description": "Complete CRUD application with RBAC and audit logging",
   "main": "server.js",
