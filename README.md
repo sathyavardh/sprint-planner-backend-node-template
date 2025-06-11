@@ -1,4 +1,4 @@
-# Zoho Planner
+# Sprint Planner
 
 A comprehensive Node.js/Express.js REST API for user management with role-based access control (RBAC), audit logging, and JWT authentication.
 

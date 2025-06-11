@@ -63,7 +63,7 @@ const deleteTask = async (req, res) => {
     await taskService.deleteTask(req.params.id);
 
     res.json({
-      message: 'Task deleted and unlinked from sprint'
+      message: 'Task deleted, unlinked from sprint and users successfully'
     });
   } catch (error) {
     res.status(500).json({

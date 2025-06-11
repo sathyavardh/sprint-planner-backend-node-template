@@ -38,5 +38,13 @@ module.exports = {
     TASK_READ: 'task:read',
     TASK_UPDATE: 'task:update',
     TASK_DELETE: 'task:delete',
+    TASKCHECKLIST_CREATE: 'taskChecklist:create',
+    TASKCHECKLIST_READ: 'taskChecklist:read',
+    TASKCHECKLIST_UPDATE: 'taskChecklist:update',
+    TASKCHECKLIST_DELETE: 'taskChecklist:delete',
+    TASKCOMMENT_CREATE: 'taskComment:create',
+    TASKCOMMENT_READ: 'taskComment:read',
+    TASKCOMMENT_UPDATE: 'taskComment:update',
+    TASKCOMMENT_DELETE: 'taskComment:delete'
   }
 };
