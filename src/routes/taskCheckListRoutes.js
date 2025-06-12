@@ -2,7 +2,8 @@ const express = require('express');
 const {
   createChecklist,
   getChecklist,
-  getChecklists,
+  getChecklistsByTaskId,
+  getAllChecklists,
   updateChecklist,
   deleteChecklist
 } = require('../controllers/taskCheckListController');
@@ -23,14 +24,19 @@ router.post('/',
   createChecklist
 );
 
-router.get('/',
+router.get('/task/:id',
   authorize([PERMISSIONS.TASKCHECKLIST_READ]),
-  getChecklists
+  getChecklistsByTaskId
 );
 
 router.get('/:id',
   authorize([PERMISSIONS.TASKCHECKLIST_READ]),
   getChecklist
+);
+
+router.get('/',
+  authorize([PERMISSIONS.TASKCHECKLIST_READ]),
+  getAllChecklists
 );
 
 router.put('/:id',

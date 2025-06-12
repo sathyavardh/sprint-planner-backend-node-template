@@ -3,6 +3,7 @@ const Task = require('../models/Task');
 
 const isUserAssigned = async (taskId, userId) => {
   const task = await Task.findById(taskId);
+  console.log('Checking task:', taskId, 'for user:', userId);
   if (!task) throw new Error("Task not found");
   const assignedIds = task.assign.map(u => u.userId.toString());
   return assignedIds.includes(userId.toString());
@@ -19,9 +20,13 @@ const getChecklistById = async (id) => {
   return TaskCheckList.findById(id).populate('createdBy', 'username');
 };
 
-const getAllChecklists = async (taskId) => {
+const getAllChecklistsByTaskId = async (taskId) => {
   return TaskCheckList.find({ taskId }).populate('createdBy', 'username');
 };
+
+const getAllChecklists = async () => {
+  return TaskCheckList.find().populate('createdBy', 'username');
+}
 
 const updateChecklist = async (id, data, updatedBy) => {
   const checklist = await TaskCheckList.findById(id);
@@ -46,6 +51,7 @@ const deleteChecklist = async (id) => {
 module.exports = {
   createChecklist,
   getChecklistById,
+  getAllChecklistsByTaskId,
   getAllChecklists,
   updateChecklist,
   deleteChecklist

@@ -48,27 +48,60 @@ const seedDatabase = async () => {
     );
     console.log('Created permissions...');
 
-    // Prepare permissions per designation
+    // Get permission IDs for assignment
+    const permissionMap = {};
+    permissions.forEach(p => {
+      permissionMap[p.permissionName] = p._id;
+    });
 
-    // Junior Dev: permissions containing "read"
-    const juniorPermissions = permissions.filter(p => 
-      p.permissionName.includes('read')
-    ).map(p => p._id);
-
-    // Senior Dev: permissions excluding those containing "delete" or "audit"
-    const seniorPermissions = permissions.filter(p => 
-      !p.permissionName.includes('delete') && !p.permissionName.includes('audit')
-    ).map(p => p._id);
-
-    // Manager: all permissions
+    // Manager - all permissions
     const managerPermissions = permissions.map(p => p._id);
 
-    // Map designations for convenience
+    // Senior Dev - exclude specific permissions
+    const excludedSeniorPermissions = new Set([
+      PERMISSIONS.USER_DELETE,
+      PERMISSIONS.USER_CREATE,
+      PERMISSIONS.USER_UPDATE,
+      PERMISSIONS.PERMISSION_CREATE,
+      PERMISSIONS.PERMISSION_UPDATE,
+      PERMISSIONS.PERMISSION_DELETE,
+      PERMISSIONS.DESIGNATION_CREATE,
+      PERMISSIONS.DESIGNATION_UPDATE,
+      PERMISSIONS.DESIGNATION_DELETE,
+      PERMISSIONS.AUDIT_READ,
+      PERMISSIONS.SPRINT_CREATE,
+      PERMISSIONS.SPRINT_UPDATE,
+      PERMISSIONS.SPRINT_DELETE
+    ]);
+
+    const seniorPermissions = permissions
+      .filter(p => !excludedSeniorPermissions.has(p.permissionName))
+      .map(p => p._id);
+
+    // Junior Dev - assign specific permissions
+    const juniorPermissionNames = [
+      PERMISSIONS.TASKCHECKLIST_CREATE,
+      PERMISSIONS.TASKCHECKLIST_READ,
+      PERMISSIONS.TASKCHECKLIST_UPDATE,
+      PERMISSIONS.TASKCHECKLIST_DELETE,
+      PERMISSIONS.TASKCOMMENT_CREATE,
+      PERMISSIONS.TASKCOMMENT_READ,
+      PERMISSIONS.TASKCOMMENT_UPDATE,
+      PERMISSIONS.TASKCOMMENT_DELETE,
+      PERMISSIONS.TASK_READ,
+      PERMISSIONS.SPRINT_READ,
+      PERMISSIONS.DESIGNATION_READ,
+      PERMISSIONS.USER_READ
+    ];
+
+    const juniorPermissions = juniorPermissionNames.map(p => permissionMap[p]);
+
+    // Map designation IDs
     const juniorId = designations.find(d => d.designationName === DESIGNATIONS.JUNIOR_DEV)._id;
     const seniorId = designations.find(d => d.designationName === DESIGNATIONS.SENIOR_DEV)._id;
     const managerId = designations.find(d => d.designationName === DESIGNATIONS.MANAGER)._id;
 
-    // Create one document per designation with all permissions as an array
+    // Create UserDesignationPermission
     await UserDesignationPermission.create([
       {
         userDesignationId: juniorId,
@@ -88,12 +121,12 @@ const seedDatabase = async () => {
     ]);
     console.log('Created designation permissions...');
 
-    // Create sample users (password will be hashed in schema middleware)
-    const users = await User.create([
+    // Create sample users
+    await User.create([
       {
-        username: 'Siva', 
-        userEmail: 'siva@zohocorp.com', 
-        userPassword: 'password123', // schema should hash this
+        username: 'Siva',
+        userEmail: 'siva@zohocorp.com',
+        userPassword: 'password123',
         userDesignation: juniorId,
         userCompany: 'ZohoCorp',
         userPhno: '1234567890'
@@ -122,7 +155,6 @@ const seedDatabase = async () => {
     console.log('- siva@zohocorp.com / password123 (Junior Developer)');
     console.log('- josheph@zohocorp.com / password123 (Senior Developer)');
     console.log('- sathya@zohocorp.com / password123 (Manager)');
-
   } catch (error) {
     console.error('❌ Error seeding database:', error);
   } finally {
@@ -130,7 +162,6 @@ const seedDatabase = async () => {
   }
 };
 
-// Run seeding if this file is executed directly
 if (require.main === module) {
   seedDatabase();
 }

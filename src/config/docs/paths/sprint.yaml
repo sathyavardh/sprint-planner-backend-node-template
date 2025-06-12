@@ -1,0 +1,115 @@
+paths:
+  /api/sprints:
+    get:
+      tags:
+        - Sprint
+      summary: Get all sprints
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of all sprints
+    post:
+      tags:
+        - Sprint
+      summary: Create a new sprint
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SprintInput'
+      responses:
+        '201':
+          description: Sprint created successfully
+        '400':
+          description: Validation error
+
+  /api/sprints/{id}:
+    get:
+      tags:
+        - Sprint
+      summary: Get a sprint by ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Sprint found
+        '404':
+          description: Sprint not found
+
+    put:
+      tags:
+        - Sprint
+      summary: Update a sprint by ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SprintInput'
+      responses:
+        '200':
+          description: Sprint updated successfully
+        '400':
+          description: Validation error
+        '404':
+          description: Sprint not found
+
+    delete:
+      tags:
+        - Sprint
+      summary: Delete a sprint by ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Sprint deleted successfully
+        '404':
+          description: Sprint not found
+
+components:
+  schemas:
+    SprintInput:
+      type: object
+      required:
+        - sprintStartDate
+        - sprintEndDate
+      properties:
+        sprintStartDate:
+          type: string
+          format: date-time
+          example: "2025-06-12T00:00:00.000Z"
+        sprintEndDate:
+          type: string
+          format: date-time
+          example: "2025-06-19T23:59:59.000Z"
+        allTaskIds:
+          type: array
+          items:
+            type: string
+          example:
+            - "64b3d4e6bcf4d8d2d4b9a5a7"
+            - "64b3d5a4bcf4d8d2d4b9a5b1"

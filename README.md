@@ -72,38 +72,67 @@ app.use(helmet()); // Applies all default protections
    # Production mode
    npm start
    ```
+# API Endpoints
 
-## API Endpoints
-
-### Authentication
-- `POST /api/auth/signup` - Register a new user
-- `POST /api/auth/login` - Login user
+## Authentication
+- `POST /api/auth/signup` - Register a new user  
+- `POST /api/auth/login` - Login user  
 - `GET /api/auth/profile` - Get user profile (protected)
 
-### Users
-- `GET /api/users` - Get all users (protected)
-- `GET /api/users/:id` - Get user by ID (protected)
-- `POST /api/users` - Create new user (protected)
-- `PUT /api/users/:id` - Update user (protected)
+## Users
+- `GET /api/users` - Get all users (protected)  
+- `GET /api/users/:id` - Get user by ID (protected)  
+- `POST /api/users` - Create new user (protected)  
+- `PUT /api/users/:id` - Update user (protected)  
 - `DELETE /api/users/:id` - Delete user (protected)
 
-### User Designations
-- `GET /api/user-designations` - Get all designations (protected)
-- `GET /api/user-designations/:id` - Get designation by ID (protected)
-- `POST /api/user-designations` - Create new designation (protected)
-- `PUT /api/user-designations/:id` - Update designation (protected)
+## User Designations
+- `GET /api/user-designations` - Get all designations (protected)  
+- `GET /api/user-designations/:id` - Get designation by ID (protected)  
+- `POST /api/user-designations` - Create new designation (protected)  
+- `PUT /api/user-designations/:id` - Update designation (protected)  
 - `DELETE /api/user-designations/:id` - Delete designation (protected)
 
-### Permissions
-- `GET /api/permissions` - Get all permissions (protected)
-- `GET /api/permissions/:id` - Get permission by ID (protected)
-- `POST /api/permissions` - Create new permission (protected)
-- `PUT /api/permissions/:id` - Update permission (protected)
+## Permissions
+- `GET /api/permissions` - Get all permissions (protected)  
+- `GET /api/permissions/:id` - Get permission by ID (protected)  
+- `POST /api/permissions` - Create new permission (protected)  
+- `PUT /api/permissions/:id` - Update permission (protected)  
 - `DELETE /api/permissions/:id` - Delete permission (protected)
 
-### Audit Logs
-- `GET /api/audits` - Get all audit logs (protected)
+## Audit Logs
+- `GET /api/audits` - Get all audit logs (protected)  
 - `GET /api/audits/:id` - Get audit log by ID (protected)
+
+## Sprints
+- `GET /api/sprints` - Get all sprints (protected)  
+- `GET /api/sprints/:id` - Get sprint by ID (protected)  
+- `POST /api/sprints` - Create new sprint (protected)  
+- `PUT /api/sprints/:id` - Update sprint (protected)  
+- `DELETE /api/sprints/:id` - Delete sprint (protected)
+
+## Tasks
+- `GET /api/tasks` - Get all tasks (protected)  
+- `GET /api/tasks/:id` - Get task by ID (protected)  
+- `POST /api/tasks` - Create new task (protected)  
+- `PUT /api/tasks/:id` - Update task (protected)  
+- `DELETE /api/tasks/:id` - Delete task (protected)
+
+## Task Checklists
+- `GET /api/task-checklists` - Get all checklists (protected)  
+- `GET /api/task-checklists/:id` - Get checklist by ID (protected)  
+- `GET /api/task-checklists/task/:id` - Get checklist(s) by Task ID (protected)  
+- `POST /api/task-checklists` - Create new checklist (protected)  
+- `PUT /api/task-checklists/:id` - Update checklist (protected)  
+- `DELETE /api/task-checklists/:id` - Delete checklist (protected)
+
+## Task Comments
+- `GET /api/task-comments/task/:taskId` - Get all comments for a task (protected)  
+- `GET /api/task-comments/:id` - Get comment by ID (protected)  
+- `POST /api/task-comments` - Create new comment (protected)  
+- `PUT /api/task-comments/:id` - Update comment (protected)  
+- `DELETE /api/task-comments/:id` - Delete comment (protected)
+
 
 ## Default Credentials
 
@@ -121,19 +150,31 @@ Once the server is running, visit `http://localhost:3000/api-docs` for interacti
 
 ```
 src/
-├── app.js                 # Application entry point
-├── config/               # Configuration files
-│   ├── constants.js      # Application constants
-│   ├── database.js       # Database connection
-│   ├── logger.js         # Winston logger configuration
-│   └── swagger.js        # Swagger configuration
-├── controllers/          # Route controllers
-├── middlewares/          # Custom middlewares
-├── models/              # Mongoose models
-├── routes/              # Express routes
-├── services/            # Business logic
-├── utils/               # Utility functions
-└── validators/          # Request validators
+├── server.js                   # Application entry point 
+├── config/                     # Configuration files
+│   ├── constants.js            # Application constants
+│   ├── database.js             # Database connection
+│   ├── logger.js               # Winston logger configuration
+│   ├── swagger.js              # Swagger setup using swagger.yaml
+│   └── docs/                   # Folder for Swagger documentation
+│       ├── swagger.yaml        # Main Swagger API definition file
+│       └── paths/              # Folder containing path-level YAML files
+│           ├── auth.yaml       # Authentication endpoints
+│           ├── users.yaml      # User endpoints
+│           ├── designations.yaml # User Designation endpoints
+│           ├── permissions.yaml  # Permission endpoints
+│           ├── tasks.yaml        # Task endpoints
+│           ├── sprints.yaml      # Sprint endpoints
+│           ├── checklist.yaml    # Task Checklist endpoints
+│           └── comments.yaml     # Task Comment endpoints
+├── controllers/                # Route controllers
+├── middlewares/                # Custom middlewares
+├── models/                     # Mongoose models
+├── routes/                     # Express routes
+├── services/                   # Business logic
+├── utils/                      # Utility functions
+└── validators/                 # Request validators
+
 ```
 
 ## Application Architecture

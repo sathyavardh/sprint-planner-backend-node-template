@@ -19,9 +19,13 @@ const getComments = async (req, res) => {
 };
 
 const getComment = async (req, res) => {
-  const comment = await taskCommentService.getCommentById(req.params.id);
-  if (!comment) return res.status(404).json({ message: "Comment not found" });
-  res.json({ message: "Comment retrieved", data: comment });
+  try {
+    const comment = await taskCommentService.getCommentById(req.params.id);
+    if (!comment) return res.status(404).json({ message: "Comment not found" });
+    res.json({ message: "Comment retrieved", data: comment });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to retrieve comment", error: err.message });
+  }
 };
 
 const updateComment = async (req, res) => {

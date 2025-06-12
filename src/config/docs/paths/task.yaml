@@ -1,0 +1,142 @@
+paths:
+  /api/tasks:
+    get:
+      tags:
+        - Task
+      summary: Get all tasks
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of tasks
+
+    post:
+      tags:
+        - Task
+      summary: Create a new task
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskInput'
+      responses:
+        '201':
+          description: Task created successfully
+        '400':
+          description: Validation error
+
+  /api/tasks/{id}:
+    get:
+      tags:
+        - Task
+      summary: Get task by ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Task retrieved successfully
+        '404':
+          description: Task not found
+
+    put:
+      tags:
+        - Task
+      summary: Update a task by ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskInput'
+      responses:
+        '200':
+          description: Task updated successfully
+        '400':
+          description: Validation error
+        '404':
+          description: Task not found
+
+    delete:
+      tags:
+        - Task
+      summary: Delete a task by ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Task deleted successfully
+        '404':
+          description: Task not found
+
+components:
+  schemas:
+    TaskInput:
+      type: object
+      required:
+        - userId
+        - taskName
+      properties:
+        userId:
+          type: string
+          example: "684a3cf464d79806824fe329"
+        sprintId:
+          type: string
+          example: "684a3cf464d79806824fe400"
+        taskName:
+          type: string
+          example: "Implement login page"
+        taskDescription:
+          type: string
+          example: "Frontend and backend login integration"
+        taskTags:
+          type: array
+          items:
+            type: string
+          example: ["frontend", "backend"]
+        taskLevel:
+          type: string
+          enum: [low, medium, high, immediate]
+          example: "immediate"
+        taskStatus:
+          type: string
+          enum: [Not yet started, In Progress, Blocked, Completed]
+          example: "Completed"
+        taskStartDate:
+          type: string
+          format: date
+          example: "2025-06-12"
+        taskEndDate:
+          type: string
+          format: date
+          example: "2025-06-19"
+        assign:
+          type: array
+          items:
+            type: object
+            properties:
+              userId:
+                type: string
+                example: "684a3cf464d79806824fe329"

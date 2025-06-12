@@ -6,7 +6,7 @@ const commentSchema = Joi.object({
   comment: Joi.string().required().min(1)
 });
 
-const validateComment = (req, res, next) => {
+const validateTaskComment = (req, res, next) => {
   const { error } = commentSchema.validate(req.body);
   if (error) {
     return res.status(400).json({ message: error.details[0].message });
@@ -14,4 +14,4 @@ const validateComment = (req, res, next) => {
   next();
 };
 
-module.exports = { validateComment };
+module.exports = { validateTaskComment };
