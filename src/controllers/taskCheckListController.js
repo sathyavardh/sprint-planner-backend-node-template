@@ -19,10 +19,20 @@ const getChecklist = async (req, res) => {
   }
 };
 
-const getChecklists = async (req, res) => {
+const getChecklistsByTaskId = async (req, res) => {
   try {
-    const result = await taskCheckListService.getAllChecklists(req.query.taskId);
+    const result = await taskCheckListService.getAllChecklistsByTaskId(req.params.id);
+    console.log("Checklists fetched:", result);
     res.json({ message: "Checklists fetched", data: result });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+const getAllChecklists = async (req, res) => {
+  try {
+    const result = await taskCheckListService.getAllChecklists();
+    res.json({ message: "All checklists fetched", data: result });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -49,7 +59,8 @@ const deleteChecklist = async (req, res) => {
 module.exports = {
   createChecklist,
   getChecklist,
-  getChecklists,
+  getChecklistsByTaskId,
+  getAllChecklists,
   updateChecklist,
   deleteChecklist
 };

@@ -1,41 +1,37 @@
-const swaggerJsdoc = require('swagger-jsdoc');
+const fs = require('fs');
+const path = require('path');
+const yaml = require('yaml');
 const swaggerUi = require('swagger-ui-express');
 
-const options = {
-  definition: {
-    openapi: '3.0.0',
-    info: {
-      title: 'User Management API',
-      version: '1.0.0',
-      description: 'A comprehensive user management system with role-based access control',
-    },
-    servers: [
-      {
-        url: process.env.BASE_URL || 'http://localhost:3000',
-        description: 'Development server',
-      },
-    ],
-    components: {
-      securitySchemes: {
-        bearerAuth: {
-          type: 'http',
-          scheme: 'bearer',
-          bearerFormat: 'JWT',
-        },
-      },
-    },
-    security: [
-      {
-        bearerAuth: [],
-      },
-    ],
-  },
-  apis: ['./src/routes/*.js'], // Path to the API docs
+const loadYamlFile = (filePath) => {
+  const raw = fs.readFileSync(filePath, 'utf8');
+  return yaml.parse(raw);
 };
 
-const specs = swaggerJsdoc(options);
+const mainDoc = loadYamlFile(path.join(__dirname, './docs/swagger.yaml'));
+
+// Load all modular YAML files
+const permissionPaths = loadYamlFile(path.join(__dirname, './docs/paths/permission.yaml'));
+const userPaths = loadYamlFile(path.join(__dirname, './docs/paths/user.yaml'));
+const userDesignationPaths = loadYamlFile(path.join(__dirname, './docs/paths/userDesignation.yaml'));
+const sprintPaths = loadYamlFile(path.join(__dirname, './docs/paths/sprint.yaml'));
+const taskPaths = loadYamlFile(path.join(__dirname, './docs/paths/task.yaml'));
+const checklistPaths = loadYamlFile(path.join(__dirname, './docs/paths/taskCheckList.yaml'));
+const taskCommentPaths = loadYamlFile(path.join(__dirname, './docs/paths/taskComment.yaml'));
+// You can add task.yaml, sprint.yaml, etc.
+
+mainDoc.paths = {
+  ...mainDoc.paths,
+  ...userPaths.paths,
+  ...permissionPaths.paths,
+  ...userDesignationPaths.paths,
+  ...sprintPaths.paths,
+  ...taskPaths.paths,
+  ...checklistPaths.paths,
+  ...taskCommentPaths.paths
+};
 
 module.exports = {
   swaggerUi,
-  specs,
+  specs: mainDoc,
 };

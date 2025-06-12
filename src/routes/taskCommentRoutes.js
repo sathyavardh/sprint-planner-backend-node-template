@@ -1,7 +1,7 @@
 const express = require('express');
 const {
-  getAllComments,
   getComment,
+  getComments,
   createComment,
   updateComment,
   deleteComment
@@ -15,16 +15,19 @@ const router = express.Router();
 
 router.use(authenticate);
 
-router.get('/',
+// Get all comments for a specific task
+router.get('/task/:taskId',
   authorize([PERMISSIONS.TASKCOMMENT_READ]),
-  getAllComments
+  getComments
 );
 
+// Get a specific comment by ID
 router.get('/:id',
   authorize([PERMISSIONS.TASKCOMMENT_READ]),
   getComment
 );
 
+// Create a new comment
 router.post('/',
   authorize([PERMISSIONS.TASKCOMMENT_CREATE]),
   validateTaskComment,
@@ -32,6 +35,7 @@ router.post('/',
   createComment
 );
 
+// Update a comment
 router.put('/:id',
   authorize([PERMISSIONS.TASKCOMMENT_UPDATE]),
   validateTaskComment,
@@ -39,6 +43,7 @@ router.put('/:id',
   updateComment
 );
 
+// Delete a comment
 router.delete('/:id',
   authorize([PERMISSIONS.TASKCOMMENT_DELETE]),
   auditMiddleware('TaskComment'),

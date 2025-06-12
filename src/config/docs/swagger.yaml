@@ -1,0 +1,38 @@
+openapi: 3.0.0
+info:
+  title: Sprint Planner API
+  version: 1.0.0
+  description: Modular Swagger Docs for all endpoints
+
+servers:
+  - url: http://localhost:3000
+    description: Development server
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - bearerAuth: []
+
+tags:
+  - name: User
+    description: Manage users
+  - name: Permission
+    description: Manage permissions and roles
+  - name: UserDesignation
+    description: Manage user designations and assign permissions
+  - name: Sprint
+    description: Manage sprints
+  - name: Task
+    description: Manage tasks
+  - name: TaskCheckList
+    description: Manage task checklists for tasks
+  - name: TaskComment
+    description: Manage comments on tasks
+
+
+paths: {}

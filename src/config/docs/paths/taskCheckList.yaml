@@ -1,0 +1,130 @@
+paths:
+  /api/task-checklists:
+    get:
+      tags:
+        - TaskCheckList
+      summary: Get all task checklists
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of all task checklists
+
+    post:
+      tags:
+        - TaskCheckList
+      summary: Create a new task checklist
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskCheckListInput'
+      responses:
+        '201':
+          description: Task checklist created successfully
+        '400':
+          description: Validation error
+
+  /api/task-checklists/{id}:
+    get:
+      tags:
+        - TaskCheckList
+      summary: Get checklist by ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Task checklist found
+        '404':
+          description: Checklist not found
+
+    put:
+      tags:
+        - TaskCheckList
+      summary: Update a checklist
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskCheckListInput'
+      responses:
+        '200':
+          description: Checklist updated
+        '404':
+          description: Checklist not found
+
+    delete:
+      tags:
+        - TaskCheckList
+      summary: Delete checklist
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Checklist deleted
+        '404':
+          description: Checklist not found
+
+  /api/task-checklists/task/{id}:
+    get:
+      tags:
+        - TaskCheckList
+      summary: Get all checklists for a task
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Checklists for the given task
+
+components:
+  schemas:
+    TaskCheckListInput:
+      type: object
+      required:
+        - taskId
+        - checklist
+      properties:
+        taskId:
+          type: string
+          example: "684a43982aec536147989e45"
+        checklist:
+          type: array
+          items:
+            type: object
+            properties:
+              item:
+                type: string
+                example: "Review requirements document"
+              isCompleted:
+                type: boolean
+                example: true

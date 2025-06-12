@@ -1,0 +1,116 @@
+paths:
+  /api/task-comments:
+    post:
+      tags:
+        - TaskComment
+      summary: Create a new comment for a task
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskCommentInput'
+      responses:
+        '201':
+          description: Task comment created successfully
+        '400':
+          description: Validation error
+
+  /api/task-comments/{id}:
+    get:
+      tags:
+        - TaskComment
+      summary: Get a specific comment by ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Comment found
+        '404':
+          description: Comment not found
+
+    put:
+      tags:
+        - TaskComment
+      summary: Update a specific comment
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskCommentInput'
+      responses:
+        '200':
+          description: Comment updated successfully
+        '404':
+          description: Comment not found
+
+    delete:
+      tags:
+        - TaskComment
+      summary: Delete a specific comment
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Comment deleted successfully
+        '404':
+          description: Comment not found
+
+  /api/task-comments/task/{taskId}:
+    get:
+      tags:
+        - TaskComment
+      summary: Get all comments for a specific task
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: taskId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of comments for the task
+
+components:
+  schemas:
+    TaskCommentInput:
+      type: object
+      required:
+        - taskId
+        - userId
+        - comment
+      properties:
+        taskId:
+          type: string
+          example: "684a43982aec536147989e45"
+        userId:
+          type: string
+          example: "684a3cf464d79806824fe328"
+        comment:
+          type: string
+          example: "This task is progressing well. I've completed the initial setup and started working on the core functionality."
